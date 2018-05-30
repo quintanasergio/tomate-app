@@ -1,0 +1,78 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.timer {
+  color: black;
+  font-size:50px;
+  font-family: "Impact", Charcoal, sans-serif;
+}
+
+button {
+    background-color: #4CAF50; /* Green */
+    border: 1px solid white;
+    border-radius: 15px;
+    color: white;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.stop-button {
+      background-color: #ff0000; /* red */
+}
+
+button.onHover {
+  background-color: #212121;
+}
+
+.not-done {
+  filter:grayscale(100%) opacity(50%);
+  }
+
+.current {
+  animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.react-confirm-dialog-bg {
+  size: 100px;
+}
+.react-confirm-dialog-content {
+  color:green;
+}
