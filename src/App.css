@@ -33,7 +33,7 @@
   font-family: "Impact", Charcoal, sans-serif;
 }
 
-button {
+button,.submit-button {
     background-color: #4CAF50; /* Green */
     border: 1px solid white;
     border-radius: 15px;

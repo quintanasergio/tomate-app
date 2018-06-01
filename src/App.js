@@ -16,21 +16,22 @@ class App extends Component {
       this.startTimer=this.startTimer.bind(this);
       this.stopTimer=this.stopTimer.bind(this);
       this.resetTimer=this.resetTimer.bind(this);
+      this.handleSettings=this.handleSettings.bind(this);
       this.state= {
         timerOn: false,
-        timer: '5000',
+        timer: '32000',
         cycles: 4,
         currentCycle: 0,
         shortBreak: false,
         longBreak: false,
-        pomodoroLength: '5000',
-        shortBreakLength: '5000',
-        longBreakLength: '5000'
+        pomodoroLength: '1500000',
+        shortBreakLength: '1500000',
+        longBreakLength: '1500000'
       }
     }
 
     formatTimer(t){
-      let hours = ('0' + Math.floor(t/60*60*1000)).slice(-2); 
+      let hours = ('0' + Math.floor(t/3600000)); 
       let minutes = ('0' + Math.floor(((t/1000)%(60*60))/60)).slice(-2);
       let seconds = ('0' + Math.floor((t/1000)%60)).slice(-2);
       return (<div>{hours}:{minutes}:{seconds}</div>);
@@ -56,6 +57,11 @@ class App extends Component {
     }
 
     skipTimer(){
+      if(this.state.currentCycle===0){
+        this.setState({
+          currentCycle: 1
+        })
+      }
       this.timerZero();
     }
 
@@ -94,7 +100,7 @@ class App extends Component {
         });
 
       } else {
-        if(this.state.currentCycle===this.state.cycles){
+        if(this.state.currentCycle>=this.state.cycles){
           this.setState({
             timer: this.state.longBreakLength,
             longBreak: true
@@ -106,6 +112,7 @@ class App extends Component {
           });
         }        
       }
+      console.log(this.state.currentCycle+" "+ this.state.cycles+" "+this.state.longBreak);
     }
 
     submit = () => {
@@ -125,15 +132,48 @@ class App extends Component {
     })
     }
 
+    handleSettings(event) {
+      event.preventDefault();
+
+      const target = event.target;
+      let workTime = target.pomodoroLength.value*60*1000;
+      let shortBreakTime = target.shortBreakLength.value*60*1000;
+      let longBreakTime = target.longBreakLength.value*60*1000;
+
+      this.setState({
+        timer: workTime,
+        timerOn: false,
+        pomodoroLength: workTime,
+        shortBreakLength: shortBreakTime,
+        longBreakLength: longBreakTime,
+        cycles: target.cycles.value
+      });
+    }
+
     settingsPopUp = () => {
+      let workTime = Math.floor(((this.state.pomodoroLength/1000)%(60*60))/60);
+      let shortBreakTime = Math.floor(((this.state.shortBreakLength/1000)%(60*60))/60);
+      let longBreakTime = Math.floor(((this.state.longBreakLength/1000)%(60*60))/60);
+
       confirmAlert({
-        customUI: () => {
+        customUI: ({onClose}) => {
             return (
               <div className='settings-popup'>
                 <h1>Settings</h1>
-                <p>You want to delete this file?</p>
-                <button onClick={()=>{console.log("cancel")}}>Cancel</button>
-                <button onClick={()=>{console.log("save")}} >Save</button>
+                <form id="settings-form" onSubmit={this.handleSettings}>
+                  <h3>Work duration</h3>
+                  <input type="number" name="pomodoroLength" min="1" step="1" defaultValue={workTime} />
+                  <h3>Short Break duration</h3>
+                  <input type="number" name="shortBreakLength" min="1" step="1" defaultValue={shortBreakTime}/>
+                  <h3>Long Break duration</h3>
+                  <input type="number" name="longBreakLength" min="1" step="1" defaultValue={longBreakTime}/>
+                  <h3>Work Sessions</h3>
+                  <input type="number" name="cycles" min="1" max="10" step="1" defaultValue={this.state.cycles}/>
+                  <br/>
+                  <input className="submit-button" type="submit" value="Save" />
+                </form>
+                <button onClick={()=>{onClose()}}>Close</button>
+
               </div>
             )
           }
