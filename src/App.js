@@ -19,20 +19,24 @@ class App extends Component {
       this.handleSettings=this.handleSettings.bind(this);
       this.state= {
         timerOn: false,
-        timer: '32000',
+        timer: '1500000',
         cycles: 4,
         currentCycle: 0,
         shortBreak: false,
         longBreak: false,
         pomodoroLength: '1500000',
-        shortBreakLength: '1500000',
-        longBreakLength: '1500000'
+        shortBreakLength: '300000',
+        longBreakLength: '600000'
       }
+    }
+
+    componentDidUpdate(){
+
     }
 
     formatTimer(t){
       let hours = ('0' + Math.floor(t/3600000)); 
-      let minutes = ('0' + Math.floor(((t/1000)%(60*60))/60)).slice(-2);
+      let minutes = ('0' + Math.floor(((t/1000)%(3600))/60)).slice(-2);
       let seconds = ('0' + Math.floor((t/1000)%60)).slice(-2);
       return (<div>{hours}:{minutes}:{seconds}</div>);
     }
@@ -186,6 +190,9 @@ class App extends Component {
       const {timer} = this.state; 
 
       let tDisplay = this.formatTimer(timer);
+
+      //document.title = tDisplay;
+
 
     return (
       <div className="App">
